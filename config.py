@@ -7,5 +7,5 @@ class CFG:
     frame_step = 15
     test_size = 0.2
     random_state = 42
-    epochs =3
+    epochs =30
     checkpoint_path = "model.h5"
