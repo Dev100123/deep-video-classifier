@@ -52,12 +52,13 @@ pip install -r requirements.txt
 ```python
 python main.py
 ```
+<code>
 This will:
   ->Load videos and extract frames
   ->Create train/validation datasets
   ->Train the model (saving the best checkpoint to model.h5)
   ->Save training plots in plots/
   ->Print validation accuracy
-
+</code>
 
 
