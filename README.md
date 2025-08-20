@@ -16,6 +16,7 @@ It loads `.mp4` videos, extracts frames, builds datasets, trains a 3D CNN model,
 ---
 
 ## 📂 Project Structure
+<code>
 video_classification/
 │
 ├── config.py # Configurations (classes, paths, hyperparameters)
@@ -25,9 +26,11 @@ video_classification/
 ├── trainer.py # Training, evaluation & plot saving
 ├── main.py # Entry point
 └── plots/ # Training history plots (auto-generated)
+</code>
 
 ## 📊 Dataset
 Organize your dataset like this:
+<code>
 dataset/
 │
 ├── class1/
@@ -37,7 +40,7 @@ dataset/
 ├── class2/
 │   ├── video3.mp4
 │   ├── video4.mp4
-
+</code>
 ---
 
 ## ⚙️ Requirements
