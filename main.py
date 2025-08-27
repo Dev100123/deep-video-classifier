@@ -2,6 +2,7 @@ from data_loader import VideoDataset
 from model_builder import VideoModel
 from trainer import Trainer
 
+#if you copy my code dont forget to thank us😁
 def main():
     dataset = VideoDataset()
     train_ds, valid_ds = dataset.get_datasets()
@@ -14,4 +15,4 @@ def main():
     trainer.evaluate()
 
 if __name__ == "__main__":
-    main()
+    main() #try to do something good always✌️
