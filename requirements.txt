@@ -2,8 +2,9 @@ pandas
 opencv-python 
 numpy 
 imageio 
-tensorflow 
 scikit-learn 
 tqdm 
 tensorflow-docs 
 matplotlib
+tensorflow==2.10
+numpy<2.0
