@@ -1,5 +1,5 @@
 from data_loader import VideoDataset
-from model_builder import VideoModel
+from model_builder import cusModel, PreModel
 from trainer import Trainer
 
 #if you copy my code dont forget to thank us😁
