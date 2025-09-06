@@ -78,11 +78,6 @@ def build_model():
         tf.keras.layers.Dense(1, activation='sigmoid'),
         tf.keras.layers.GlobalAveragePooling3D(), 
     ])
-    # model.compile(
-    #     optimizer="adam",
-    #     loss=tf.keras.losses.BinaryCrossentropy(),
-    #     metrics=["accuracy"]
-    # )
     return model
 
 # --- Prediction function for binary model ---
