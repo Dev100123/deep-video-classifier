@@ -1,6 +1,7 @@
 import tensorflow as tf
+from config import CFG
 
-class VideoModel:
+class cusModel:
     @staticmethod
     def build(input_shape=(10, 224, 224, 3)):
         model = tf.keras.Sequential([
@@ -20,5 +21,32 @@ class VideoModel:
             loss=tf.keras.losses.BinaryCrossentropy(),
             optimizer=tf.keras.optimizers.Adam(0.001),
             metrics=["accuracy"]
+        )
+        return model
+
+import tensorflow as tf
+
+class PreModel:
+    @staticmethod
+    def build():
+        if CFG.model_name == "vgg16":
+            print("Using VGG16 model")
+            net = tf.keras.applications.VGG16(
+                include_top=False,
+                weights="imagenet"
+            )
+        net.trainable = False
+
+        model = tf.keras.Sequential([
+            tf.keras.layers.Rescaling(255.0),
+            tf.keras.layers.TimeDistributed(net),
+            tf.keras.layers.Dense(1, activation='sigmoid'),
+            tf.keras.layers.GlobalAveragePooling3D(), 
+        ])
+
+        model.compile(
+            optimizer='adam',
+            loss=tf.keras.losses.BinaryCrossentropy(),
+            metrics=['accuracy']
         )
         return model

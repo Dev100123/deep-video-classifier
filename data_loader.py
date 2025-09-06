@@ -34,13 +34,31 @@ class VideoDataset:
         
         print(f"Train samples: {len(train_targets)} | Validation samples: {len(val_targets)}")
 
+        # Build train dataset
         train_ds = tf.data.Dataset.from_tensor_slices((train_features, train_targets)) \
-            .shuffle(CFG.batch_size * 4).batch(CFG.batch_size).cache().prefetch(tf.data.AUTOTUNE)
+            .shuffle(CFG.batch_size * 4) \
+            .batch(CFG.batch_size) \
+            .cache() \
+            .prefetch(1)   
 
+        # Build validation dataset
         valid_ds = tf.data.Dataset.from_tensor_slices((val_features, val_targets)) \
-            .batch(CFG.batch_size).cache().prefetch(tf.data.AUTOTUNE)
+            .batch(CFG.batch_size) \
+            .cache() \
+            .prefetch(1)  
 
+        # Apply HPC-safe threading options
+        options = tf.data.Options()
+        options.threading.max_intra_op_parallelism = 1
+        options.threading.private_threadpool_size = 1
+        options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
+
+        train_ds = train_ds.with_options(options)
+        valid_ds = valid_ds.with_options(options)
+
+        # Clean up memory
         del train_features, val_features
         gc.collect()
 
         return train_ds, valid_ds
+
