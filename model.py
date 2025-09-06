@@ -35,6 +35,18 @@ class PreModel:
                 include_top=False,
                 weights="imagenet"
             )
+        elif CFG.model_name == "vgg19":
+            print("Using VGG19 model")
+            net = tf.keras.applications.VGG19(
+                include_top=False,
+                weights="imagenet"
+            )
+        elif CFG.model_name == "resnet50":
+            print("Using ResNet50 model")
+            net = tf.keras.applications.ResNet50(
+                include_top=False,
+                weights="imagenet"
+            )
         net.trainable = False
 
         model = tf.keras.Sequential([
