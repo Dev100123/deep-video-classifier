@@ -1,4 +1,4 @@
-# 🎥 Deep Video Classification (TensorFlow + CNN3D)
+# 🎥 Deep Video Classification (TensorFlow GPU + CNN3D)
 
 This project implements a **deep learning pipeline for video classification** using **TensorFlow, Conv3D, and an OOP (Object-Oriented) architecture**.  
 It loads `.mp4` videos, extracts frames, builds datasets, trains a 3D CNN model, and evaluates classification accuracy.
@@ -22,7 +22,7 @@ video_classification/
 ├── config.py # Configurations (classes, paths, hyperparameters)
 ├── utils.py # Utility functions (frame extraction, formatting)
 ├── data_loader.py # Video dataset loader (train/val split, tf.data pipelines)
-├── model_builder.py # CNN3D model architecture
+├── model.py # CNN3D model architecture + pre trained model (VGG16, VGG19, & ResNet50)
 ├── trainer.py # Training, evaluation & plot saving
 ├── main.py # Entry point
 └── plots/ # Training history plots (auto-generated)
