@@ -1,6 +1,6 @@
 import os
 
-# 🔧 Limit threading BEFORE TensorFlow is imported
+# Limit threading BEFORE TensorFlow is imported
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"   # disable oneDNN threads (optional but safer on HPC)
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["TF_NUM_INTRAOP_THREADS"] = "1"
