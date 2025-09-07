@@ -22,7 +22,7 @@ video_classification/
 ├── config.py # Configurations (classes, paths, hyperparameters)
 ├── utils.py # Utility functions (frame extraction, formatting)
 ├── data_loader.py # Video dataset loader (train/val split, tf.data pipelines)
-├── model_builder.py # CNN3D model architecture
+├── model.py # CNN3D model architecture + pre trained model (VGG16, VGG19, & ResNet50)
 ├── trainer.py # Training, evaluation & plot saving
 ├── main.py # Entry point
 └── plots/ # Training history plots (auto-generated)
