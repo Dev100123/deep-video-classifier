@@ -8,6 +8,6 @@ class CFG:
     test_size = 0.2
     random_state = 42
     epochs = 30
-    model_select = "pre_model"  # options: pre_model/custom_model
+    model_select = "custom_model"  # options: pre_model/custom_model
     model_name = "resnet50"  # options: vgg16, vgg19, resnet50
     checkpoint_path = "model.h5"

@@ -24,6 +24,24 @@ class VideoDataset:
             features.append(frames_from_video_file(file_path, CFG.n_frames, CFG.output_size, CFG.frame_step))
         return np.array(features)
 
+    def get_arrays(self):
+        """
+        Convenience method that loads file paths, extracts features for all videos,
+        and returns (features, targets) as numpy arrays.
+
+        Warning: This loads all processed frames into memory. For large datasets
+        consider streaming or on-the-fly decoding instead of using this method.
+        """
+        # ensure file lists are populated
+        if not self.file_paths or not self.targets:
+            self.load_files()
+
+        features = self.extract_features()
+        targets = np.array(self.targets)
+
+        # allow the caller to manage memory
+        return features, targets
+
     def get_datasets(self):
         self.load_files()
         features = self.extract_features()
@@ -34,13 +52,31 @@ class VideoDataset:
         
         print(f"Train samples: {len(train_targets)} | Validation samples: {len(val_targets)}")
 
+        # Build train dataset
         train_ds = tf.data.Dataset.from_tensor_slices((train_features, train_targets)) \
-            .shuffle(CFG.batch_size * 4).batch(CFG.batch_size).cache().prefetch(tf.data.AUTOTUNE)
+            .shuffle(CFG.batch_size * 4) \
+            .batch(CFG.batch_size) \
+            .cache() \
+            .prefetch(1)   
 
+        # Build validation dataset
         valid_ds = tf.data.Dataset.from_tensor_slices((val_features, val_targets)) \
-            .batch(CFG.batch_size).cache().prefetch(tf.data.AUTOTUNE)
+            .batch(CFG.batch_size) \
+            .cache() \
+            .prefetch(1)  
 
+        # Apply HPC-safe threading options
+        options = tf.data.Options()
+        options.threading.max_intra_op_parallelism = 1
+        options.threading.private_threadpool_size = 1
+        options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
+
+        train_ds = train_ds.with_options(options)
+        valid_ds = valid_ds.with_options(options)
+
+        # Clean up memory
         del train_features, val_features
         gc.collect()
 
         return train_ds, valid_ds
+
