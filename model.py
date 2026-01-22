@@ -1,30 +1,68 @@
 import tensorflow as tf
 from config import CFG
 
+# class cusModel:
+#     @staticmethod
+#     def build(input_shape=(10, 224, 224, 3)):
+#         model = tf.keras.Sequential([
+#             tf.keras.Input(shape=input_shape),
+#             tf.keras.layers.Conv3D(32, kernel_size=3, padding="same", activation="relu"),
+#             tf.keras.layers.MaxPooling3D(),
+#             tf.keras.layers.Conv3D(64, kernel_size=3, padding="same", activation="relu"),
+#             tf.keras.layers.MaxPooling3D(),
+#             tf.keras.layers.Conv3D(128, kernel_size=3, padding="same", activation="relu"),
+#             tf.keras.layers.MaxPooling3D(),
+#             tf.keras.layers.Dropout(0.3),
+#             tf.keras.layers.GlobalAveragePooling3D(),
+#             tf.keras.layers.Dense(1, activation="sigmoid")  
+#             # tf.keras.layers.Dense(len(CFG.classes), activation="softmax")
+#         ])
+
+#         model.compile(
+#             loss=tf.keras.losses.BinaryCrossentropy(),
+#             # loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+#             optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
+#             metrics=["accuracy"]
+#         )
+#         return model
+
 class cusModel:
     @staticmethod
     def build(input_shape=(10, 224, 224, 3)):
-        model = tf.keras.Sequential([
-            tf.keras.Input(shape=input_shape),
-            tf.keras.layers.Conv3D(32, kernel_size=3, padding="same", activation="relu"),
-            tf.keras.layers.MaxPooling3D(),
-            tf.keras.layers.Conv3D(64, kernel_size=3, padding="same", activation="relu"),
-            tf.keras.layers.MaxPooling3D(),
-            tf.keras.layers.Conv3D(128, kernel_size=3, padding="same", activation="relu"),
-            tf.keras.layers.MaxPooling3D(),
-            tf.keras.layers.Dropout(0.3),
-            tf.keras.layers.GlobalAveragePooling3D(),
-            tf.keras.layers.Dense(1, activation="sigmoid")  # Binary classification
-        ])
+        inputs = tf.keras.Input(shape=input_shape)
+
+        # -------- Block 1 --------
+        x = tf.keras.layers.Conv3D(32, 3, padding="same")(inputs)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        x = tf.keras.layers.MaxPooling3D((1, 2, 2))(x)
+
+        # -------- Block 2 --------
+        x = tf.keras.layers.Conv3D(64, 3, padding="same")(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        x = tf.keras.layers.MaxPooling3D((2, 2, 2))(x)
+
+        # -------- Block 3 --------
+        x = tf.keras.layers.Conv3D(128, 3, padding="same")(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        x = tf.keras.layers.MaxPooling3D((2, 2, 2))(x)
+
+        x = tf.keras.layers.GlobalAveragePooling3D()(x)
+        x = tf.keras.layers.Dropout(0.5)(x)
+
+        outputs = tf.keras.layers.Dense(1, activation="sigmoid")(x)
+
+        model = tf.keras.Model(inputs, outputs)
 
         model.compile(
+            optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
             loss=tf.keras.losses.BinaryCrossentropy(),
-            optimizer=tf.keras.optimizers.Adam(0.001),
             metrics=["accuracy"]
         )
         return model
 
-import tensorflow as tf
 
 class PreModel:
     @staticmethod
